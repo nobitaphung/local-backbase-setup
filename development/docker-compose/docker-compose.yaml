@@ -108,7 +108,6 @@ x-transaction-enricher: &transaction-enricher
 
 x-confirmation: &confirmation
   backbase.confirmation.maximum-callback-attempts: 4
-
 #end config
 
 volumes:
@@ -214,6 +213,12 @@ services:
       KEYCLOAK_CONNECTIONSJPA_QUARKUS_MIGRATIONSTRATEGY: "update"
       KEYCLOAK_BACKBASE_OIDC_TOKEN_CONVERTER_URL: "http://token-converter:8080"
       keycloak.hostname.default.frontendUrl: "http://10.162.86.210:8180/auth"
+      KEYCLOAK_BACKBASE_EVENT_LISTENERS_AUDIT_INTEGRATIONSERVICEURL: "http://host.docker.internal:8080/audit-service"
+      KEYCLOAK_BACKBASE_DEVICE_URL: "http://host.docker.internal:8080/device-management-service"
+      KEYCLOAK_BACKBASE_FIDO_URL: "http://host.docker.internal:8080/fido-service"
+      KEYCLOAK_BACKBASE_MOBILE_AUTHENTICATION_URL: "http://host.docker.internal:8080/mobile-authentication"
+      KC_SPI_CONFIRMATION_SERVICE_CLIENT_DEFAULT_URL: "http://host.docker.internal:8080/confirmation"
+      KC_SPI_WEB_AUTHENTICATION_SERVICE_CLIENT_DEFAULT_URL: "http://host.docker.internal:8080/web-authentication"
       JAVA_TOOL_OPTIONS: "-Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.action=import -Dkeycloak.profile.feature.upload_scripts=enabled -Dquarkus.log.category.'\"com.backbase\"'.level=DEBUG"
     volumes:
       - ../config/identity:/tmp/keycloak-export
