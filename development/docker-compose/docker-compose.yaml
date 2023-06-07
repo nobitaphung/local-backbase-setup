@@ -102,10 +102,13 @@ x-limit: &limit
 
 x-transaction-manager: &transaction-manager
   backbase.transaction.enrichment.enabled: true
-  backbase.transaction.enrichment.enabled: true
 
 x-transaction-enricher: &transaction-enricher
   backbase.transaction.enrichment.enrich-product-types: savings-account,current-account,checking-account,credit-card
+
+x-confirmation: &confirmation
+  backbase.confirmation.maximum-callback-attempts: 4
+
 #end config
 
 volumes:
@@ -723,21 +726,22 @@ services:
     links:
       - registry
 
-  transaction-integration-mock:
-    container_name: transaction_integration_mock
-    image: repo.backbase.com/backbase-docker-releases/transaction-integration-mock:1.50
+  confirmation:
+    container_name: confirmation
+    image: repo.backbase.com/backbase-docker-releases/confirmation:${BB_VERSION}
     ports:
-      - "8323:8080"
+      - "8123:8080"
     environment:
       <<: *common-variables
       <<: *message-broker-variables
       <<: *database-variables
-      spring.datasource.url: jdbc:mysql://mysql:3306/transaction-integration-mock?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
+      <<: *confirmation
+      spring.datasource.url: jdbc:mysql://mysql:3306/confirmation?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
     volumes:
       - ./scripts:/tmp/h
     healthcheck:
       <<: *healthcheck-defaults
-      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/transaction-integration-mock", "<status>UP</status>" ]
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/confirmation", "<status>UP</status>" ]
     depends_on:
       mysql:
         condition: service_healthy
