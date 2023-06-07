@@ -811,7 +811,7 @@ services:
     links:
       - registry
 
-  user-profile-external-mock:
+  user-integration-external-mock:
     container_name: user_profile_external_mock
     image: repo.backbase.com/backbase-docker-releases/user-profile-external-mock:${BB_VERSION}
     ports:
