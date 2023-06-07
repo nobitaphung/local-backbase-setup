@@ -774,6 +774,107 @@ services:
     links:
       - registry
 
+  user-profile-core-mock:
+    container_name: user_profile_core_mock
+    image: repo.backbase.com/backbase-docker-releases/user-profile-core-mock:${BB_VERSION}
+    ports:
+      - "8321:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/user-profile-core-mock", "<status>UP</status>" ]
+    links:
+      - registry
+
+  user-profile-manager:
+    container_name: user_profile_manager
+    image: repo.backbase.com/backbase-docker-releases/user-profile-manager:${BB_VERSION}
+    ports:
+      - "8322:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+      <<: *database-variables
+      spring.datasource.url: jdbc:mysql://mysql:3306/user-profile-manager?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/user-profile-manager", "<status>UP</status>" ]
+    depends_on:
+      mysql:
+        condition: service_healthy
+    links:
+      - registry
+
+  user-profile-external-mock:
+    container_name: user_profile_external_mock
+    image: repo.backbase.com/backbase-docker-releases/user-profile-external-mock:${BB_VERSION}
+    ports:
+      - "8325:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/user-profile-external-mock", "<status>UP</status>" ]
+    links:
+      - registry
+
+  legalentity-integration-service:
+    container_name: legalentity_integration_service
+    image: repo.backbase.com/backbase-docker-releases/legalentity-integration-service:${BB_VERSION}
+    ports:
+      - "8326:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/legalentity-integration-service", "<status>UP</status>" ]
+    links:
+      - registry
+
+  legalentity-external-mock:
+    container_name: legalentity_external_mock
+    image: repo.backbase.com/backbase-docker-releases/legalentity-external-mock:${BB_VERSION}
+    ports:
+      - "8327:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/legalentity-external-mock", "<status>UP</status>" ]
+    links:
+      - registry
+
+  accessgroup-integration-service:
+    container_name: accessgroup_integration_service
+    image: repo.backbase.com/backbase-docker-releases/accessgroup-integration-service:${BB_VERSION}
+    ports:
+      - "8328:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/accessgroup-integration-service", "<status>UP</status>" ]
+    links:
+      - registry
+
   # <EXAMPLE-SERVICE-NAME>:
   #   container_name: example_service
   #   image: <DOCKER-REGISTRY>/<REPOSITORY-NAME>:<TAG>
