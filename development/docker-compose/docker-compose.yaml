@@ -843,9 +843,9 @@ services:
     links:
       - registry
 
-  legalentity-external-mock:
-    container_name: legalentity_external_mock
-    image: repo.backbase.com/backbase-docker-releases/legalentity-external-mock:${BB_VERSION}
+  legalentity-integration-external-mock:
+    container_name: legalentity_integration_external_mock
+    image: repo.backbase.com/backbase-docker-releases/legalentity-integration-external-mock:${BB_VERSION}
     ports:
       - "8327:8080"
     environment:
@@ -855,7 +855,7 @@ services:
       - ./scripts:/tmp/h
     healthcheck:
       <<: *healthcheck-defaults
-      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/legalentity-external-mock", "<status>UP</status>" ]
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/legalentity-integration-external-mock", "<status>UP</status>" ]
     links:
       - registry
 
