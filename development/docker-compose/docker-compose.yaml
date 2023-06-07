@@ -709,7 +709,7 @@ services:
 
   transaction-integration-service:
     container_name: transaction_integration_service
-    image: repo.backbase.com/backbase-docker-releases/transaction-integration-service:${BB_VERSION}
+    image: repo.backbase.com/backbase-docker-releases/transaction-integration-service/1.50
     ports:
       - "8320:8080"
     environment:
@@ -725,7 +725,7 @@ services:
 
   transaction-integration-mock:
     container_name: transaction_integration_mock
-    image: repo.backbase.com/backbase-docker-releases/transaction-integration-mock:${BB_VERSION}
+    image: repo.backbase.com/backbase-docker-releases/transaction-integration-mock/1.50
     ports:
       - "8323:8080"
     environment:
