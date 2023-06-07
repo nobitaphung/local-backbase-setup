@@ -416,10 +416,7 @@ services:
     ports:
       - "8091:8080"
     environment:
-      <<: *common-variables
-      <<: *message-broker-variables
-      <<: *database-variables
-      <<: *contentservices
+      <<: [*common-variables, *message-broker-variables, *database-variables, *contentservices]
       spring.datasource.url: jdbc:mysql://mysql:3306/contentservices?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
     volumes:
       - ./scripts:/tmp/h
@@ -686,6 +683,7 @@ services:
         condition: service_healthy
     links:
       - registry
+      - transaction-integration-mock
 
   transaction-enricher:
     container_name: transaction_enricher
@@ -703,6 +701,43 @@ services:
     healthcheck:
       <<: *healthcheck-defaults
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/transaction-enricher", "<status>UP</status>" ]
+    depends_on:
+      mysql:
+        condition: service_healthy
+    links:
+      - registry
+
+  transaction-integration-service:
+    container_name: transaction_integration_service
+    image: repo.backbase.com/backbase-docker-releases/transaction-integration-service:${BB_VERSION}
+    ports:
+      - "8320:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/transaction-integration-service", "<status>UP</status>" ]
+    links:
+      - registry
+
+  transaction-integration-mock:
+    container_name: transaction_integration_mock
+    image: repo.backbase.com/backbase-docker-releases/transaction-integration-mock:${BB_VERSION}
+    ports:
+      - "8323:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+      <<: *database-variables
+      spring.datasource.url: jdbc:mysql://mysql:3306/transaction-integration-mock?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/transaction-integration-mock", "<status>UP</status>" ]
     depends_on:
       mysql:
         condition: service_healthy
