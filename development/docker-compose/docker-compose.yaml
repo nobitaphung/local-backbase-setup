@@ -40,9 +40,9 @@ x-healthcheck-defaults: &healthcheck-defaults
 
 #config service properties
 x-access-control: &access-control
-  backbase.approval.validation.enabled: true
-  backbase.audit.enabled: true
-  backbase.data-group.types: ARRANGEMENTS
+  backbase.accesscontrol.token.expiration: 300
+  backbase.accesscontrol.token.initPhrase: RandomInitVecto2
+  backbase.accesscontrol.token.key: Bar12345Bar12345
 
 x-audit-service: &audit-service
   spring.cache.caffeine.spec: expireAfterWrite=10s
@@ -108,6 +108,15 @@ x-transaction-enricher: &transaction-enricher
 
 x-confirmation: &confirmation
   backbase.confirmation.maximum-callback-attempts: 4
+
+x-arrangement-manager: &arrangement-manager
+  backbase.security.mtls.enabled: false
+
+x-user-manager: &user-manager
+  backbase.users.identity-endpoints-enabled: true
+  backbase.users.identity-integration-enabled: true
+  backbase.users.sync-primary-to-identity-enabled: true
+  spring.cloud.discovery.client.simple.instances.user-integration-outbound-service[0].uri: http://wiremock:8080
 #end config
 
 volumes:
@@ -261,7 +270,7 @@ services:
     ports:
       - "8050:8080"
     environment:
-      <<: [*common-variables, *message-broker-variables, *database-variables]
+      <<: [*common-variables, *message-broker-variables, *database-variables, *arrangement-manager]
       spring.datasource.url: jdbc:mysql://mysql:3306/arrangement-manager?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
     volumes:
       - ./scripts:/tmp/h
@@ -281,12 +290,8 @@ services:
     ports:
       - "8060:8080"
     environment:
-      <<: [*common-variables, *message-broker-variables, *database-variables]
+      <<: [*common-variables, *message-broker-variables, *database-variables, *user-manager]
       spring.datasource.url: jdbc:mysql://mysql:3306/user-manager?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
-      backbase.users.identity-endpoints-enabled: true
-      backbase.users.identity-integration-enabled: true
-      backbase.users.sync-primary-to-identity-enabled: true
-      spring.cloud.discovery.client.simple.instances.user-integration-outbound-service[0].uri: http://wiremock:8080
     volumes:
       - ./scripts:/tmp/h
     healthcheck:
