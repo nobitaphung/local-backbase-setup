@@ -1,0 +1,11 @@
+---
+### Live profile
+spring:
+  profiles: live
+  application:
+    name: accesscontrol
+
+backbase:
+  approval:
+    validation:
+       enabled: true
