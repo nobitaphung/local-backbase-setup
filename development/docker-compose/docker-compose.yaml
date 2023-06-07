@@ -689,7 +689,7 @@ services:
     container_name: transaction_enricher
     image: repo.backbase.com/backbase-docker-releases/transaction-enricher:${BB_VERSION}
     ports:
-      - "8323:8080"
+      - "8324:8080"
     environment:
       <<: *common-variables
       <<: *message-broker-variables
