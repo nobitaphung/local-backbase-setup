@@ -227,6 +227,8 @@ services:
       KEYCLOAK_BACKBASE_MOBILE_AUTHENTICATION_URL: "http://host.docker.internal:8080/mobile-authentication"
       KC_SPI_CONFIRMATION_SERVICE_CLIENT_DEFAULT_URL: "http://host.docker.internal:8080/confirmation"
       KC_SPI_WEB_AUTHENTICATION_SERVICE_CLIENT_DEFAULT_URL: "http://host.docker.internal:8080/web-authentication"
+      KEYCLOAK.BACKBASE.CONFIRMATION.URL: "http://host.docker.internal:8080/confirmation"
+      KEYCLOAK.BACKBASE.COMMUNICATION.URL: "http://host.docker.internal:8080/communication"
       JAVA_TOOL_OPTIONS: "-Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.action=import -Dkeycloak.profile.feature.upload_scripts=enabled -Dquarkus.log.category.'\"com.backbase\"'.level=DEBUG"
     volumes:
       - ../config/identity:/tmp/keycloak-export
