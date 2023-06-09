@@ -928,7 +928,7 @@ services:
 
   payment-order-options:
     container_name: payment_order_options
-    image: repo.backbase.com/backbase-docker-releases/payment-order-option:${BB_VERSION}
+    image: repo.backbase.com/backbase-docker-releases/payment-order-options:${BB_VERSION}
     ports:
       - "8315:8080"
     environment:
