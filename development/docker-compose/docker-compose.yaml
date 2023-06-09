@@ -116,6 +116,12 @@ x-user-manager: &user-manager
   backbase.users.identity-integration-enabled: true
   backbase.users.sync-primary-to-identity-enabled: true
   spring.cloud.discovery.client.simple.instances.user-integration-outbound-service[0].uri: http://wiremock:8080
+
+x-payment-order-service: &payment-order-service
+  backbase.communication.services.dbs.integration.external.outbound.paymentorder.service-id: payment-order-core-mock-service
+
+x-payment-order-options: &payment-order-options
+  spring.config.use-legacy-processing: true
 #end config
 
 volumes:
@@ -878,6 +884,62 @@ services:
     healthcheck:
       <<: *healthcheck-defaults
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/accessgroup-integration-service", "<status>UP</status>" ]
+    links:
+      - registry
+
+  payment-order-service:
+    container_name: payment_order_service
+    image: repo.backbase.com/backbase-docker-releases/payment-order-service:${BB_VERSION}
+    ports:
+      - "8397:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+      <<: *database-variables
+      <<: *payment-order-service
+      spring.datasource.url: jdbc:mysql://mysql:3306/payment-order-service?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/payment-order-service", "<status>UP</status>" ]
+    depends_on:
+      mysql:
+        condition: service_healthy
+    links:
+      - registry
+      - payment-order-core-mock-service
+
+  payment-order-core-mock-service:
+    container_name: payment_order_core_mock_service
+    image: repo.backbase.com/backbase-docker-releases/payment-order-core-mock-service:${BB_VERSION}
+    ports:
+      - "8398:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/payment_order_core_mock_service", "<status>UP</status>" ]
+    links:
+      - registry
+
+  payment-order-options:
+    container_name: payment_order_options
+    image: repo.backbase.com/backbase-docker-releases/payment-order-option:${BB_VERSION}
+    ports:
+      - "8315:8080"
+    environment:
+      <<: *common-variables
+      <<: *message-broker-variables
+      <<: *payment-order-options
+    volumes:
+      - ./scripts:/tmp/h
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/payment-order-options", "<status>UP</status>" ]
     links:
       - registry
 
