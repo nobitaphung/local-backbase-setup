@@ -129,10 +129,6 @@ x-user-profile-core-mock: &user-profile-core-mock
   scim.resource-types.user.endpoint: /Users
   scim.resource-types.user.schema: "urn:ietf:params:scim:schemas:core:2.0:User"
   scim.resource-types.user.schemaExtensions:
-    - schema: "urn:ietf:params:scim:schemas:extension:backbase:2.0:User"
-      required: false
-    - schema: "urn:ietf:params:scim:schemas:extension:backbase:2.0:ExtendedUser"
-      required: false
   backbase.security.public.paths: /**
 
 #end config
