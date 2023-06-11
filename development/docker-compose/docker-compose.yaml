@@ -122,6 +122,19 @@ x-payment-order-service: &payment-order-service
 
 x-payment-order-options: &payment-order-options
   spring.config.use-legacy-processing: true
+
+x-user-profile-core-mock: &user-profile-core-mock
+  scim.server-config.authentication-schemes:
+  scim.resource-types.user.name: User
+  scim.resource-types.user.endpoint: /Users
+  scim.resource-types.user.schema: "urn:ietf:params:scim:schemas:core:2.0:User"
+  scim.resource-types.user.schemaExtensions:
+    - schema: "urn:ietf:params:scim:schemas:extension:backbase:2.0:User"
+      required: false
+    - schema: "urn:ietf:params:scim:schemas:extension:backbase:2.0:ExtendedUser"
+      required: false
+  backbase.security.public.paths: /**
+
 #end config
 
 volumes:
@@ -794,11 +807,16 @@ services:
     environment:
       <<: *common-variables
       <<: *message-broker-variables
+      <<: *database-variables
+      <<: *user-profile-core-mock
     volumes:
       - ./scripts:/tmp/h
     healthcheck:
       <<: *healthcheck-defaults
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/user-profile-core-mock", "<status>UP</status>" ]
+    depends_on:
+      mysql:
+        condition: service_healthy
     links:
       - registry
 
