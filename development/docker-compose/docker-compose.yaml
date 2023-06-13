@@ -46,7 +46,7 @@ x-access-control: &access-control
     communication:
       http:
         client:
-          blacklisted-headers: x-xsrf-token
+          blacklisted-headers: "x-xsrf-token"
 
 x-audit-service: &audit-service
   spring.cache.caffeine.spec: expireAfterWrite=10s
