@@ -40,13 +40,8 @@ x-healthcheck-defaults: &healthcheck-defaults
 
 #config service properties
 x-edge: &edge
-  gateway.actuator.security.enabled: true
-  gateway.csrf.enabled: true
-  gateway.request.ignore.cookies: authorization, x-cookie-a
-  spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedOrigins: "*"
-  spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedHeaders: "*"
-  spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedMethods: GET, POST
-  spring.cloud.gateway.default-filters: DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, <other-filters>
+  gateway.actuator.security.enabled: false
+  gateway.csrf.enabled: false
 
 x-access-control: &access-control
   backbase.audit.enabled: true
