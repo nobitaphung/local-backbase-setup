@@ -248,6 +248,9 @@ services:
       KEYCLOAK.BACKBASE.COMMUNICATION.URL: "http://communication:8080"
       JAVA_TOOL_OPTIONS: "-Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.action=import -Dkeycloak.profile.feature.upload_scripts=enabled -Dquarkus.log.category.'\"com.backbase\"'.level=DEBUG"
       QUARKUS_HTTP_CORS: "true"
+      QUARKUS_HTTP_CORS_EXPOSED_HEADERS: Location
+      QUARKUS_HTTP_CORS_ORIGINS: http://10.162.86.210:8280
+      QUARKUS_HTTP_CORS_METHODS: GET,POST,OPTIONS
     volumes:
       - ../config/identity:/tmp/keycloak-export
       - ./scripts:/tmp/h
