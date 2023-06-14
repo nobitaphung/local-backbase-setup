@@ -43,12 +43,7 @@ x-edge: &edge
   gateway.actuator.security.enabled: true
   gateway.csrf.enabled: true
   gateway.request.ignore.cookies: authorization, x-cookie-a
-  spring:
-    cloud:
-      gateway:
-        globalcors:
-          corsConfigurations:
-            '[/**]':
+  spring.cloud.gateway.globalcors.corsConfigurations.'[/**]:
               allowedOrigins: "*"
               allowedHeaders: "*"
               allowedMethods:
