@@ -235,7 +235,7 @@ services:
       KEYCLOAK_HOME_DIR: "/"
       KEYCLOAK_CONNECTIONSJPA_QUARKUS_INITIALIZEEMPTY: "true"
       KEYCLOAK_CONNECTIONSJPA_QUARKUS_MIGRATIONSTRATEGY: "update"
-      KEYCLOAK_BACKBASE_OIDC_TOKEN_CONVERTER_URL: "http://token-converter:8080"
+      KEYCLOAK_BACKBASE_OIDC_TOKEN_CONVERTER_URL: "http://host.docker.internal:8080/token-converter"
       keycloak.hostname.default.frontendUrl: "http://10.162.86.210:8180/auth"
       KEYCLOAK_BACKBASE_EVENT_LISTENERS_AUDIT_INTEGRATIONSERVICEURL: "http://host.docker.internal:8080/audit-service"
       KEYCLOAK_BACKBASE_DEVICE_URL: "http://host.docker.internal:8080/device-management-service"
