@@ -39,6 +39,11 @@ x-healthcheck-defaults: &healthcheck-defaults
   retries: 15
 
 #config service properties
+x-edge: &edge
+  gateway.actuator.security.enabled: true
+  gateway.csrf.enabled: true
+  gateway.request.ignore.cookies: authorization, x-cookie-a
+
 x-access-control: &access-control
   backbase.audit.enabled: true
   backbase.approval.validation.enabled: false
@@ -189,8 +194,7 @@ services:
       - "8280:8080"
     environment:
       <<: *common-variables
-      gateway.actuator.security.enabled: true
-      gateway.csrf.enabled: true
+      <<: *edge
     volumes:
       - ./scripts/HealthCheck.java:/tmp/HealthCheck.java
     healthcheck:
