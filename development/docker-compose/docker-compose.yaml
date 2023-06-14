@@ -1,5 +1,5 @@
 # https://docs.docker.com/compose/compose-file/
-version: "3.9"
+version: "3.5"
 x-common-variables: &common-variables
   JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=60.0 -Dlogging.level.com.backbase=DEBUG
   SIG_SECRET_KEY: JWTSecretKeyDontUseInProduction!
