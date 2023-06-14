@@ -224,6 +224,7 @@ services:
     image: repo.backbase.com/backbase-docker-releases/backbase-identity:2022.08.3-LTS
     ports:
       - '8180:8080'
+      - '10090:10090'
     environment:
       QUARKUS_DATASOURCE_URL: "jdbc:mysql://mysql:3306/backbase_identity?useSSL=false&allowPublicKeyRetrieval=true&cacheServerConfiguration=true&createDatabaseIfNotExist=true"
       QUARKUS_DATASOURCE_USERNAME: "root"
