@@ -221,7 +221,7 @@ services:
 
   backbase-identity:
     container_name: backbase_identity
-    image: repo.backbase.com/backbase-docker-releases/backbase-identity:${BB_VERSION}
+    image: repo.backbase.com/backbase-docker-releases/backbase-identity:2022.08.3-LTS
     ports:
       - '8180:8080'
     environment:
