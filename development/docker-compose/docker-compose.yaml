@@ -43,6 +43,17 @@ x-edge: &edge
   gateway.actuator.security.enabled: true
   gateway.csrf.enabled: true
   gateway.request.ignore.cookies: authorization, x-cookie-a
+  spring:
+    cloud:
+      gateway:
+        globalcors:
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins: "*"
+              allowedHeaders: "*"
+              allowedMethods:
+                - GET
+                - POST
 
 x-access-control: &access-control
   backbase.audit.enabled: true
