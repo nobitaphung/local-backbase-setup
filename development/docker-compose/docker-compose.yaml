@@ -249,11 +249,12 @@ services:
       JAVA_TOOL_OPTIONS: "-Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.action=import -Dkeycloak.profile.feature.upload_scripts=enabled -Dquarkus.log.category.'\"com.backbase\"'.level=DEBUG"
       QUARKUS_HTTP_CORS: "true"
       QUARKUS_HTTP_CORS_EXPOSED_HEADERS: Location
-      QUARKUS_HTTP_CORS_ORIGINS: http://10.162.86.210:8280
+      QUARKUS_HTTP_CORS_ORIGINS: http://localhost:9191,http://localhost:7777
       QUARKUS_HTTP_CORS_METHODS: GET,POST,OPTIONS
     volumes:
-      - ../config/identity:/tmp/keycloak-export
-      - ./scripts:/tmp/h
+      - ./backbase-identity/themes:/themes
+      - ./backbase-identity/providers:/providers
+      - ./backbase-identity/json:/tmp/keycloak-export
     healthcheck:
       <<: *healthcheck-defaults
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://10.162.86.210:8080/auth/realms/backbase/.well-known/openid-configuration", "backbase" ]
