@@ -44,8 +44,8 @@ x-edge: &edge
   gateway.csrf.enabled: false
 
 x-access-control: &access-control
-  backbase.audit.enabled: true
-  backbase.approval.validation.enabled: false
+  backbase.audit.enabled:
+  backbase.approval.validation.enabled:
 
 x-audit-service: &audit-service
   spring.cache.caffeine.spec: expireAfterWrite=10s
@@ -278,11 +278,6 @@ services:
     links:
       - activemq
       - registry
-      - audit-service
-      - user-manager
-      - limit
-      - arrangement-manager
-      - approval-service
 
   arrangement-manager:
     container_name: arrangement_manager
@@ -461,8 +456,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - audit-service
-      - provisioning
 
   provisioning:
     container_name: provisioning
@@ -507,9 +500,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - access-control
-      - audit-service
-      - user-manager
 
   fido-service:
     container_name: fido_service
@@ -587,11 +577,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - user-manager
-      - device-management-service
-      - fido-service
-      - contentservices
-      - communication
 
   account-statement:
     container_name: account_statement
@@ -608,7 +593,6 @@ services:
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/account-statement", "<status>UP</status>" ]
     links:
       - registry
-      - account-statement-integration-mock
 
   account-statement-integration-mock:
     container_name: account_statement_integration_mock
@@ -627,7 +611,6 @@ services:
       test: [ "CMD", "java", "/tmp/h/HealthCheck.java", "http://registry:8080/eureka/apps/account-statement-integration-mock", "<status>UP</status>" ]
     links:
       - registry
-      - account-mock
 
   approval-service:
     container_name: approval_service
@@ -672,8 +655,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - audit-service
-      - approval-service
 
   account-mock:
     container_name: account_mock
@@ -716,7 +697,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - transaction-integration-mock
 
   transaction-enricher:
     container_name: transaction_enricher
@@ -926,7 +906,6 @@ services:
         condition: service_healthy
     links:
       - registry
-      - payment-order-core-mock-service
 
   payment-order-core-mock-service:
     container_name: payment_order_core_mock_service
