@@ -46,6 +46,7 @@ x-edge: &edge
   spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedOrigins: "*"
   spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedHeaders: "*"
   spring.cloud.gateway.globalcors.corsConfigurations.'[/**].allowedMethods: GET, POST
+  spring.cloud.gateway.default-filters: DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, <other-filters>
 
 x-access-control: &access-control
   backbase.audit.enabled: true
