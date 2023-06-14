@@ -50,7 +50,6 @@ x-edge: &edge
 x-access-control: &access-control
   backbase.audit.enabled: true
   backbase.approval.validation.enabled: false
-  backbase.communication.http.client.blacklisted-headers: "x-xsrf-token"
 
 x-audit-service: &audit-service
   spring.cache.caffeine.spec: expireAfterWrite=10s
